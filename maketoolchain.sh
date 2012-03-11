@@ -233,6 +233,24 @@ if [ x$GDB_VER != x ]; then
 fi
 
 
+#############################################################################
+## Build the ST-Link tools (if needed)
+#############################################################################
+if [ x$STLINK_GITURL != x ]; then
+	status_banner "Building and installing the ST-Link tools from $STLINK_GITURL..."
+
+	git clone $STLINK_GITURL
+	pushd stlink
+	# ST-Link doesn't like being parallel-built. Run the make in single core mode.
+	# (It's not like it takes that long to build...)
+	make
+	cp flash/st-flash gdbserver/st-util $PFX/bin
+	mkdir -p $PFX/stlink-tools
+	cp *.rules *.modprobe.conf $PFX/stlink-tools
+	popd
+fi
+
+
 status_banner "Build complete."
 
 popd	# $BDIR

@@ -17,3 +17,5 @@ NEWLIB_VER="1.20.0"
 GDB_VER="7.4"
 # Set to '1' to build the GDB Server too
 BUILD_GDB_SERVER=0
+# Set to a valid Git URL to download and build the ST-Link tools too
+STLINK_GITURL="git://github.com/texane/stlink.git"
