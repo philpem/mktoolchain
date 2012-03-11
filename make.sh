@@ -31,6 +31,17 @@ function info_banner()
 	echo
 }
 
+function download()
+{
+	CF=$CACHE/$(basename $1)
+	if [ -f $CF ]; then
+		info_banner "File '$(basename $1)' already cached; using cached copy"
+	else
+		info_banner "Downloading $1..."
+		wget -O $CF $1
+	fi
+}
+
 # see how many CPUs this machine has -- this will count double for HyperThreaded chips, which is EXACTLY what we want:
 # one GCC thread per physical CPU or HyperThreading-provided 'virtual' CPU, plus one awaiting. Except when we're running
 # on a unicore box, in which case, one thread is fine.
@@ -75,6 +86,17 @@ if [ "x$TCHAINBASE" == "x" ]; then
 fi
 PFX="/opt/toolchains/$TCHAINBASE"
 
+if [ -d $PFX ]; then
+	echo "ERROR: This toolchain is already installed in $PFX!"
+	exit 0
+fi
+
+# set cache directory
+CACHE=$(pwd)/cache
+if [ ! -d "$CACHE" ]; then
+	mkdir "$CACHE"
+fi
+
 mkdir $BDIR
 pushd $BDIR
 
@@ -96,18 +118,22 @@ echo "## Number of CPUs:   $CPUS  (including HyperThreaded virtual CPUs)"
 echo "## '-j' option:      $JLEV"
 echo "################################################"
 
+#############################################################################
 ## Build Binutils:
+#############################################################################
 status_banner "Building Binutils version $BINUTILS_VER..."
 
-if [ -d binutils-$BINUTILS_DIR ]; then
+if [ -d binutils-$BINUTILS_VER ]; then
 	info_banner "Deleting old binutils build files..."
-	rm -rf binutils-$BINUTILS_DIR
+	rm -rf binutils-$BINUTILS_VER
 fi
 
-info_banner "Unpacking binutils..."
-tar -jxf ../binutils-$BINUTILS_VER.tar.bz2
+download "http://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VER.tar.bz2"
 
-pushd binutils-$BINUTILS_DIR
+info_banner "Unpacking binutils..."
+tar -jxf $CACHE/binutils-$BINUTILS_VER.tar.bz2
+
+pushd binutils-$BINUTILS_VER
 mkdir build
 cd build
 
@@ -121,9 +147,9 @@ info_banner "Installing binutils..."
 make install
 popd
 
-
-
+#############################################################################
 ## Build GCC and Newlib:
+#############################################################################
 status_banner "Building GCC version $GCC_VER with Newlib version $NEWLIB_VER..."
 
 if [ -d gcc-$GCC_VER ]; then
@@ -136,11 +162,14 @@ if [ -d newlib-$NEWLIB_VER ]; then
 	rm -rf newlib-$NEWLIB_VER
 fi
 
+download "http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.bz2"
+download "ftp://sources.redhat.com/pub/newlib/newlib-$NEWLIB_VER.tar.gz"
+
 info_banner "Unpacking gcc..."
-tar -jxf ../gcc-$GCC_VER.tar.bz2
+tar -jxf $CACHE/gcc-$GCC_VER.tar.bz2
 
 info_banner "Unpacking newlib..."
-tar -zxf ../newlib-$NEWLIB_VER.tar.gz
+tar -zxf $CACHE/newlib-$NEWLIB_VER.tar.gz
 
 pushd gcc-$GCC_VER
 ln -s ../newlib-$NEWLIB_VER/newlib newlib
@@ -157,8 +186,9 @@ info_banner "Installing gcc..."
 make install
 popd
 
-
+#############################################################################
 ## Build GDB and GDBserver
+#############################################################################
 if [ x$GDB_VER != x ]; then
 	status_banner "Building GDB and GDBserver version $GDB_VER..."
 
@@ -167,8 +197,10 @@ if [ x$GDB_VER != x ]; then
 		rm -rf gdb-$GDB_VER
 	fi
 
+	download "http://ftp.gnu.org/gnu/gdb/gdb-$GDB_VER.tar.bz2"
+
 	info_banner "Unpacking GDB version $GDB_VER..."
-	tar -jxf ../gdb-$GDB_VER.tar.bz2
+	tar -jxf $CACHE/gdb-$GDB_VER.tar.bz2
 
 	pushd gdb-$GDB_VER
 	mkdir build; cd build
