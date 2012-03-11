@@ -1,0 +1,12 @@
+# build configuration for Lattice Mico32
+DESCRIPTION="Lattice Mico32 (ELF, No-OS, GCC4.5.3, SJLJ-Exceptions)"
+TGT="lm32-elf"
+BINUTILS_VER="2.21.1a"
+BINUTILS_DIR="2.21.1"
+# gcc 4.6.1 doesn't work on lm32
+GCC_VER="4.5.3"
+NEWLIB_VER="1.19.0"
+LANGUAGES="c,c++"
+GCC_EXTRA_CONFIG="--enable-sjlj-exceptions"
+GDB_VER="7.3.1"
+BUILD_GDB_SERVER=0

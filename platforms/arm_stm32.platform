@@ -1,0 +1,11 @@
+# build configuration for STMicroelectronics STM32 (ARM Cortex-M3)
+DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++)"
+TGT="arm-none-eabi"
+BINUTILS_VER="2.21.1a"
+BINUTILS_DIR="2.21.1"
+GCC_VER="4.6.1"
+NEWLIB_VER="1.19.0"
+LANGUAGES="c,c++"
+TCHAINBASE="arm-none-eabi-stm32"
+GDB_VER="7.3.1"
+BUILD_GDB_SERVER=0
