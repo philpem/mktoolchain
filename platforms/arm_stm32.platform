@@ -1,11 +1,19 @@
 # build configuration for STMicroelectronics STM32 (ARM Cortex-M3)
+# Friendly description
 DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++)"
+# Toolchain target (GCC target name)
 TGT="arm-none-eabi"
-BINUTILS_VER="2.21.1a"
-BINUTILS_DIR="2.21.1"
-GCC_VER="4.6.1"
-NEWLIB_VER="1.19.0"
-LANGUAGES="c,c++"
+# Base path of toolchain (directory under /opt/toolchains)
 TCHAINBASE="arm-none-eabi-stm32"
-GDB_VER="7.3.1"
+# Version of Binutils to build
+BINUTILS_VER="2.22"
+# Version of GCC to build
+GCC_VER="4.6.3"
+# Languages to build for
+LANGUAGES="c,c++"
+# Version of Newlib to build
+NEWLIB_VER="1.20.0"
+# Version of GDB to build
+GDB_VER="7.4"
+# Set to '1' to build the GDB Server too
 BUILD_GDB_SERVER=0
