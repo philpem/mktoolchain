@@ -177,7 +177,7 @@ mkdir build; cd build
 export PATH=$PATH:$PFX/bin
 
 info_banner "Configuring gcc..."
-../configure --prefix=$PFX --target=$TGT --enable-languages=c,c++ --with-newlib $GCC_EXTRA_CONFIG
+../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --with-newlib $GCC_EXTRA_CONFIG
 
 info_banner "Building gcc..."
 make $JLEV
