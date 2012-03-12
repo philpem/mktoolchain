@@ -11,6 +11,8 @@ BINUTILS_VER="2.22"
 GCC_VER="4.6.3"
 # Languages to build for
 LANGUAGES="c,c++"
+# Extra GCC config options
+GCC_EXTRA_CONFIG="--disable-newlib-supplied-syscalls"
 # Version of Newlib to build
 NEWLIB_VER="1.20.0"
 # Version of GDB to build
