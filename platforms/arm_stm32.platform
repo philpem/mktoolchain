@@ -7,12 +7,17 @@ TGT="arm-none-eabi"
 TCHAINBASE="arm-none-eabi-stm32"
 # Version of Binutils to build
 BINUTILS_VER="2.22"
+# Extra Binutils config options
+BINUTILS_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld"
 # Version of GCC to build
 GCC_VER="4.6.3"
 # Languages to build for
 LANGUAGES="c,c++"
 # Extra GCC config options
-GCC_EXTRA_CONFIG="--disable-newlib-supplied-syscalls"
+GCC_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-threads --with-system-zlib --disable-newlib-supplied-syscalls"
+# Patches which need to be applied to GCC
+# patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff from: https://github.com/MikeSmith/summon-arm-toolchain/tree/master/patches
+GCC_PATCHES="patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff"
 # Version of Newlib to build
 NEWLIB_VER="1.20.0"
 # Version of GDB to build

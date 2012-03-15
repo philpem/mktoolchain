@@ -45,7 +45,12 @@ function download()
 # see how many CPUs this machine has -- this will count double for HyperThreaded chips, which is EXACTLY what we want:
 # one GCC thread per physical CPU or HyperThreading-provided 'virtual' CPU, plus one awaiting. Except when we're running
 # on a unicore box, in which case, one thread is fine.
-CPUS=$(expr `cat /proc/cpuinfo  |grep processor |tail -1 |awk '{print $3}'` + 1 || echo 1)
+if [ "x$CPUS" == "x" ]; then
+	CPUS=$(expr `cat /proc/cpuinfo  |grep processor |tail -1 |awk '{print $3}'` + 1 || echo 1)
+	CPUS_OVERRIDDEN=0
+else
+	CPUS_OVERRIDDEN=1
+fi
 if [ $CPUS -ne 1 ]; then
 	JLEV=-j$(expr $CPUS + 1)
 else
@@ -97,6 +102,9 @@ if [ ! -d "$CACHE" ]; then
 	mkdir "$CACHE"
 fi
 
+# set patch directory
+PATCHES=$(pwd)/patches
+
 mkdir $BDIR
 pushd $BDIR
 
@@ -107,6 +115,7 @@ echo "################################################"
 echo "## Platform script:  $PSCRIPT"
 echo "## Target platform:  $TGT"
 echo "## Binutils version: $BINUTILS_VER"
+echo "## Bu. extra config: $BINUTILS_EXTRA_CONFIG"
 echo "## GCC version:      $GCC_VER"
 echo "## Newlib version:   $NEWLIB_VER"
 if [ x$GDB_VER != x ]; then
@@ -114,7 +123,14 @@ if [ x$GDB_VER != x ]; then
 fi
 echo "## Languages:        $LANGUAGES"
 echo "## GCC extra config: $GCC_EXTRA_CONFIG"
-echo "## Number of CPUs:   $CPUS  (including HyperThreaded virtual CPUs)"
+
+echo "## GCC patches:      $GCC_PATCHES"
+
+if [ $CPUS_OVERRIDDEN -eq 1 ]; then
+	echo "## Number of CPUs:   $CPUS  (specified with environment override)"
+else
+	echo "## Number of CPUs:   $CPUS  (including HyperThreaded virtual CPUs)"
+fi
 echo "## '-j' option:      $JLEV"
 echo "################################################"
 
@@ -138,7 +154,7 @@ mkdir build
 cd build
 
 info_banner "Configuring binutils..."
-../configure --prefix=$PFX --target=$TGT
+../configure --prefix=$PFX --target=$TGT $(BINUTILS_EXTRA_CONFIG)
 
 info_banner "### Building binutils..."
 make $JLEV
@@ -173,6 +189,14 @@ tar -zxf $CACHE/newlib-$NEWLIB_VER.tar.gz
 
 pushd gcc-$GCC_VER
 ln -s ../newlib-$NEWLIB_VER/newlib newlib
+
+# patch GCC if necessary
+for i in $GCC_PATCHES; do
+	info_banner "Applying GCC patch: $i"
+	patch -p0 < ${PATCHES}/$i
+done
+
+# create build directory and select it
 mkdir build; cd build
 export PATH=$PATH:$PFX/bin
 
