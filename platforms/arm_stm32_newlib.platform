@@ -1,10 +1,10 @@
 # build configuration for STMicroelectronics STM32 (ARM Cortex-M3)
 # Friendly description
-DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++)"
+DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++) with Newlib"
 # Toolchain target (GCC target name)
 TGT="arm-none-eabi"
 # Base path of toolchain (directory under /opt/toolchains)
-TCHAINBASE="arm-none-eabi-stm32"
+TCHAINBASE="arm-none-eabi-stm32-newlib"
 # Version of Binutils to build
 BINUTILS_VER="2.22"
 # Extra Binutils config options
