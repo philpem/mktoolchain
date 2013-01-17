@@ -117,7 +117,9 @@ echo "## Target platform:  $TGT"
 echo "## Binutils version: $BINUTILS_VER"
 echo "## Bu. extra config: $BINUTILS_EXTRA_CONFIG"
 echo "## GCC version:      $GCC_VER"
-echo "## Newlib version:   $NEWLIB_VER"
+if [ x$NEWLIB_VER != x ]; then
+	echo "## Newlib version:   $NEWLIB_VER"
+fi
 if [ x$GDB_VER != x ]; then
 	echo "## GDB version:      $GDB_VER"
 fi
@@ -166,29 +168,44 @@ popd
 #############################################################################
 ## Build GCC and Newlib:
 #############################################################################
-status_banner "Building GCC version $GCC_VER with Newlib version $NEWLIB_VER..."
+
+if [ x$NEWLIB_VER != x ]; then
+	status_banner "Building GCC version $GCC_VER with Newlib version $NEWLIB_VER..."
+else
+	status_banner "Building GCC version $GCC_VER without Newlib support..."
+fi
 
 if [ -d gcc-$GCC_VER ]; then
 	info_banner "Deleting old gcc build files..."
 	rm -rf gcc-$GCC_VER
 fi
 
-if [ -d newlib-$NEWLIB_VER ]; then
-	info_banner "Deleting old newlib build files..."
-	rm -rf newlib-$NEWLIB_VER
+if [ x$NEWLIB_VER != x ]; then
+	if [ -d newlib-$NEWLIB_VER ]; then
+		info_banner "Deleting old newlib build files..."
+		rm -rf newlib-$NEWLIB_VER
+	fi
 fi
 
 download "http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.bz2"
-download "ftp://sources.redhat.com/pub/newlib/newlib-$NEWLIB_VER.tar.gz"
+
+if [ x$NEWLIB_VER != x ]; then
+	download "ftp://sources.redhat.com/pub/newlib/newlib-$NEWLIB_VER.tar.gz"
+fi
 
 info_banner "Unpacking gcc..."
 tar -jxf $CACHE/gcc-$GCC_VER.tar.bz2
 
-info_banner "Unpacking newlib..."
-tar -zxf $CACHE/newlib-$NEWLIB_VER.tar.gz
+if [ x$NEWLIB_VER != x ]; then
+	info_banner "Unpacking newlib..."
+	tar -zxf $CACHE/newlib-$NEWLIB_VER.tar.gz
+fi
 
 pushd gcc-$GCC_VER
-ln -s ../newlib-$NEWLIB_VER/newlib newlib
+
+if [ x$NEWLIB_VER != x ]; then
+	ln -s ../newlib-$NEWLIB_VER/newlib newlib
+fi
 
 # patch GCC if necessary
 for i in $GCC_PATCHES; do
@@ -201,7 +218,11 @@ mkdir build; cd build
 export PATH=$PATH:$PFX/bin
 
 info_banner "Configuring gcc..."
-../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --with-newlib $GCC_EXTRA_CONFIG
+if [ x$NEWLIB_VER != x ]; then
+	../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --with-newlib $GCC_EXTRA_CONFIG
+else
+	../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --without-newlib $GCC_EXTRA_CONFIG
+fi
 
 info_banner "Building gcc..."
 make $JLEV
