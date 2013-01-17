@@ -288,10 +288,19 @@ if [ x$STLINK_GITURL != x ]; then
 	pushd stlink
 	# ST-Link doesn't like being parallel-built. Run the make in single core mode.
 	# (It's not like it takes that long to build...)
-	make
-	cp flash/st-flash gdbserver/st-util $PFX/bin
+	if [ -f autogen.sh ]; then
+		# New versions of Texane's ST-Link tools use Autoconf...
+		./autogen.sh
+		./configure --prefix=$PFX
+		make
+		make install
+	else
+		# If we're building an old version, just run make...
+		make
+		cp flash/st-flash gdbserver/st-util $PFX/bin
+	fi
 	mkdir -p $PFX/stlink-tools
-	cp *.rules *.modprobe.conf $PFX/stlink-tools
+	cp *.rules *.modprobe.conf README ACKNOWLEDGMENTS AUTHORS TODO $PFX/stlink-tools
 	popd
 fi
 
