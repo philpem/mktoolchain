@@ -156,7 +156,7 @@ mkdir build
 cd build
 
 info_banner "Configuring binutils..."
-../configure --prefix=$PFX --target=$TGT $(BINUTILS_EXTRA_CONFIG)
+../configure --prefix=$PFX --target=$TGT ${BINUTILS_EXTRA_CONFIG}
 
 info_banner "### Building binutils..."
 make $JLEV
