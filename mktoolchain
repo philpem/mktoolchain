@@ -219,9 +219,9 @@ export PATH=$PATH:$PFX/bin
 
 info_banner "Configuring gcc..."
 if [ x$NEWLIB_VER != x ]; then
-	../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --with-newlib $GCC_EXTRA_CONFIG
+	CC=${GCC_COMPILER} ../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --with-newlib $GCC_EXTRA_CONFIG
 else
-	../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --without-newlib $GCC_EXTRA_CONFIG
+	CC=${GCC_COMPILER} ../configure --prefix=$PFX --target=$TGT --enable-languages=$LANGUAGES --without-newlib $GCC_EXTRA_CONFIG
 fi
 
 info_banner "Building gcc..."

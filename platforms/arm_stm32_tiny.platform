@@ -13,13 +13,15 @@ BINUTILS_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld"
 GCC_VER="4.6.3"
 # Languages to build for
 LANGUAGES="c"
+# Configuration environment variables
+GCC_COMPILER="gcc-4.7"
 # Extra GCC config options
 GCC_EXTRA_CONFIG="MAKEINFO=missing --enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-threads --with-system-zlib --disable-libssp"
 # Patches which need to be applied to GCC
 # patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff from: https://github.com/MikeSmith/summon-arm-toolchain/tree/master/patches
 GCC_PATCHES="patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff"
 # Version of GDB to build
-GDB_VER="7.4"
+GDB_VER="7.7"
 # Set to '1' to build the GDB Server too
 BUILD_GDB_SERVER=0
 # Set to a valid Git URL to download and build the ST-Link tools too
