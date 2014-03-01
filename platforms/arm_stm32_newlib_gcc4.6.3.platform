@@ -6,22 +6,22 @@ TGT="arm-none-eabi"
 # Base path of toolchain (directory under /opt/toolchains)
 TCHAINBASE="arm-none-eabi-stm32-newlib"
 # Version of Binutils to build
-BINUTILS_VER="2.24"
+BINUTILS_VER="2.22"
 # Extra Binutils config options
 BINUTILS_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld"
 # Version of GCC to build
-GCC_VER="4.8.2"
+GCC_VER="4.6.3"
 # Languages to build for
 LANGUAGES="c,c++"
 # Configuration environment variables
-#GCC_COMPILER="gcc-4.7"
+GCC_COMPILER="gcc-4.7"
 # Extra GCC config options
-GCC_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-threads --with-system-zlib --disable-newlib-supplied-syscalls"
+GCC_EXTRA_CONFIG="MAKEINFO=missing --enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-threads --with-system-zlib --disable-newlib-supplied-syscalls"
 # Patches which need to be applied to GCC
 # patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff from: https://github.com/MikeSmith/summon-arm-toolchain/tree/master/patches
-#GCC_PATCHES="patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff"
+GCC_PATCHES="patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff"
 # Version of Newlib to build
-NEWLIB_VER="2.1.0"
+NEWLIB_VER="1.20.0"
 # Version of GDB to build
 GDB_VER="7.7"
 # Set to '1' to build the GDB Server too
