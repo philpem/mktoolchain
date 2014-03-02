@@ -1,0 +1,20 @@
+# Sourced from: http://sourceforge.net/p/netx-arm-elf-gc/netx-arm-elf-gc/ci/233ffe996148d97467d179ab373b23731586a78f/
+diff -Nauwr libgcc/config/arm/t-arm-elf libgcc/config/arm/t-arm-elf.new
+--- libgcc/config/arm/t-arm-elf	1970-01-01 01:00:00.000000000 +0100
++++ libgcc/config/arm/t-arm-elf.new	2014-03-02 14:32:00.000000000 +0000
+@@ -0,0 +1,3 @@
++# On ARM unwinder will be pulled in when using 64-bit division
++# Prevent this by removing exceptions completely
++LIB2_DIVMOD_EXCEPTION_FLAGS := -fno-exceptions -fno-non-call-exceptions 
+diff -Nauwr libgcc/Makefile.in libgcc/Makefile.in.new
+--- libgcc/Makefile.in	2013-02-04 19:06:20.000000000 +0000
++++ libgcc/Makefile.in.new	2014-03-02 14:39:17.000000000 +0000
+@@ -813,7 +813,7 @@
+ # libgcc_eh.a, only LIB2ADDEH matters.  If we do, only LIB2ADDEHSTATIC and
+ # LIB2ADDEHSHARED matter.  (Usually all three are identical.)
+ 
+-c_flags := -fexceptions
++c_flags := -fno-exceptions
+ 
+ ifeq ($(enable_shared),yes)
+ 

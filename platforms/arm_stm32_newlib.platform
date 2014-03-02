@@ -19,7 +19,7 @@ LANGUAGES="c,c++"
 GCC_EXTRA_CONFIG="--enable-multilib --with-gnu-as --with-gnu-ld --disable-shared --disable-threads --with-system-zlib --disable-newlib-supplied-syscalls"
 # Patches which need to be applied to GCC
 # patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff from: https://github.com/MikeSmith/summon-arm-toolchain/tree/master/patches
-#GCC_PATCHES="patch-gcc-config-arm-t-arm-elf.diff patch-libgcc-divide-exceptions.diff"
+GCC_PATCHES="patch-gcc4.8.2-config-arm-t-arm-elf.diff patch-gcc4.8.2-libgcc-divide-exceptions.diff"
 # Version of Newlib to build
 NEWLIB_VER="2.1.0"
 # Version of GDB to build
