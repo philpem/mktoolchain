@@ -1,6 +1,6 @@
 # build configuration for STMicroelectronics STM32 (ARM Cortex-M3)
 # Friendly description
-DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++) with Newlib"
+DESCRIPTION="STMicroelectronics STM32 (ARM Cortex-M3, EABI, C/C++), GCC 4.8.2 with Newlib"
 # Toolchain target (GCC target name)
 TGT="arm-none-eabi"
 # Base path of toolchain (directory under /opt/toolchains)
