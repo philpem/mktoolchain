@@ -2,6 +2,9 @@
 
 set -e
 
+# Put your local GNU FTP mirror site location here!
+GNU_MIRROR="http://mirrorservice.org/sites/ftp.gnu.org"
+
 function list_platforms()
 {
 	echo "Known platforms:"
@@ -146,7 +149,7 @@ if [ -d binutils-$BINUTILS_VER ]; then
 	rm -rf binutils-$BINUTILS_VER
 fi
 
-download "http://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VER.tar.bz2"
+download "$GNU_MIRROR/gnu/binutils/binutils-$BINUTILS_VER.tar.bz2"
 
 info_banner "Unpacking binutils..."
 tar -jxf $CACHE/binutils-$BINUTILS_VER.tar.bz2
@@ -187,7 +190,7 @@ if [ x$NEWLIB_VER != x ]; then
 	fi
 fi
 
-download "http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.bz2"
+download "$GNU_MIRROR/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.bz2"
 
 if [ x$NEWLIB_VER != x ]; then
 	download "ftp://sources.redhat.com/pub/newlib/newlib-$NEWLIB_VER.tar.gz"
@@ -242,7 +245,7 @@ if [ x$GDB_VER != x ]; then
 		rm -rf gdb-$GDB_VER
 	fi
 
-	download "http://ftp.gnu.org/gnu/gdb/gdb-$GDB_VER.tar.bz2"
+	download "$GNU_MIRROR/gnu/gdb/gdb-$GDB_VER.tar.bz2"
 
 	info_banner "Unpacking GDB version $GDB_VER..."
 	tar -jxf $CACHE/gdb-$GDB_VER.tar.bz2
